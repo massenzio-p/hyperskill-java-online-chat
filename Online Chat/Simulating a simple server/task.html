@@ -1,0 +1,43 @@
+<div class="step-text">
+<h5 id="description" style="text-align: center;">Description</h5>
+<p>Online chat is an application that lets you send and receive messages through the Internet. This project will show and explain the magic behind casually chatting with your online pals: you will work that magic yourself!</p>
+<p>The first stage of the project is pretty simple. Imagine that some people are messaging each other in a group chat. Your program should receive raw messages from the standard input(i.e. System.in), process them, and output only the text type messages ignoring the technical messages like when someone <strong>joined</strong>/<strong>left</strong> the chat.</p>
+<p>Each line of the input contains the person's name and the action this person performed. If the person performed the <strong>sent </strong>action, then the rest of the line after the keyword <code class="java">sent</code> is the text of their message. Check out the output example for a better understanding!</p>
+<h5 id="objectives" style="text-align: center;">Objectives</h5>
+<p>In this stage, your program should satisfy the following conditions:</p>
+<ol>
+<li>Every line of the input contains the person's name and the action this person performed (sent, joined, left, connected, and disconnected).</li>
+<li>The person's name is a single word; there are no character restrictions for the person’s name.</li>
+<li>The sent messages match the pattern "<em>Name sent Message</em>".</li>
+<li>The messages in the output match the pattern "<em>Name: Message</em>".</li>
+<li>All other types of messages are not shown in the output.</li>
+<li>Your program will receive only correct raw messages.</li>
+</ol>
+<h5 id="example" style="text-align: center;">Example</h5>
+<p>The greater-than symbol followed by a space <code class="java">&gt;</code> represents the user input. Note that it's not part of the input.</p>
+<p><strong>Example</strong></p>
+<pre><code class="language-no-highlight">&gt; Nick joined
+&gt; Nick sent Hello everyone!
+Nick: Hello everyone!
+&gt; Nick sent Someone here?
+Nick: Someone here?
+&gt; Josh joined
+&gt; Josh sent Hey Nick!
+Josh: Hey Nick!
+&gt; Nick sent Hey Josh! I thought no one here...
+Nick: Hey Josh! I thought no one was here...
+&gt; Josh sent Oh, I just joined, so..
+Josh: Oh, I just joined, so..
+&gt; Nick sent OK
+Nick: OK
+&gt; Nick disconnected
+&gt; Josh sent Are you here?
+Josh: Are you here?
+&gt; Nick connected
+&gt; Nick sent Yes, just bad connection
+Nick: Yes, just bad connection
+&gt; Josh sent Alright
+Josh: Alright
+&gt; Nick left
+&gt; Josh left</code></pre>
+</div>
