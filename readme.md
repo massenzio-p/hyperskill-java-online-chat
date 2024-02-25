@@ -20,7 +20,7 @@ Your program will receive only correct raw messages.
 Example
 The greater-than symbol followed by a space > represents the user input. Note that it's not part of the input.
 
-Example
+### Example
 
 ```> Nick joined
 > Nick sent Hello everyone!
