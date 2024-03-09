@@ -1,6 +1,6 @@
 type: edu
 files:
-  - name: src/chat/Main.java
+  - name: src/chat/Server.java
     visible: true
     text: |
       package chat;

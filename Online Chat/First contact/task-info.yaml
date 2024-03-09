@@ -1,6 +1,6 @@
 type: edu
 files:
-  - name: src/chat/Main.java
+  - name: src/chat/server/Server.java
     visible: true
     text: |
       package chat;
@@ -83,6 +83,217 @@ files:
       
       }
     learner_created: false
+  - name: src/chat/handler/NameRecognitionHandler.java
+    visible: true
+    text: |
+      package chat.handler;
+      
+      import java.util.StringTokenizer;
+      
+      public class NameRecognitionHandler implements InputHandler {
+      
+          @Override
+          public void handle(Command input) {
+              StringTokenizer stringTokenizer = new StringTokenizer(input.getRawCommand(), " ");
+              String username = stringTokenizer.nextToken();
+              input.setUsername(username);
+              input.setUnprocessedPart(input.getRawCommand().replaceFirst(username, ""));
+          }
+      }
+    learner_created: true
+  - name: src/chat/handler/DefaultHandlerFactory.java
+    visible: true
+    text: |
+      package chat.handler;
+      
+      class DefaultHandlerFactory implements HandlerFactory {
+      
+          @Override
+          public InputHandler getHandler(HandlerType type) {
+              return switch (type) {
+                  case NAME_HANDLER -> new NameRecognitionHandler();
+                  case COMMAND_HANDLER -> new CommandHandler();
+                  case COMPOUND -> new CompoundHandler(this);
+              };
+          }
+      }
+    learner_created: true
+  - name: src/chat/handler/Command.java
+    visible: true
+    text: |
+      package chat.handler;
+      
+      public interface Command {
+      
+          String getRawCommand();
+          String getUsername();
+          String getUnprocessedPart();
+      
+          void setUsername(String username);
+          void setUnprocessedPart(String unprocessedPart);
+      }
+    learner_created: true
+  - name: src/chat/handler/CommandHandler.java
+    visible: true
+    text: |
+      package chat.handler;
+      
+      import java.util.StringTokenizer;
+      
+      class CommandHandler implements InputHandler {
+      
+          @Override
+          public void handle(Command input) {
+              StringTokenizer tokenizer = new StringTokenizer(input.getUnprocessedPart(), " ");
+              String command = tokenizer.nextToken();
+              String payload = input.getUnprocessedPart().replaceFirst(command, "").trim();
+      
+              switch (command) {
+                  case "joined" -> {}
+                  case "sent" -> {
+                      System.out.printf("%s: %s%n", input.getUsername(), payload);
+                  }
+                  case "disconnected" -> {}
+                  case "left" -> {}
+              }
+      
+              input.setUnprocessedPart("");
+          }
+      }
+    learner_created: true
+  - name: src/chat/handler/HandlerFactory.java
+    visible: true
+    text: |
+      package chat.handler;
+      
+      public interface HandlerFactory {
+      
+          enum HandlerType {
+              COMPOUND, NAME_HANDLER, COMMAND_HANDLER
+          }
+      
+          static HandlerFactory getDefaultFactory() {
+              return new DefaultHandlerFactory();
+          }
+      
+          InputHandler getHandler(HandlerType type);
+      }
+    learner_created: true
+  - name: src/chat/handler/ConsoleCommand.java
+    visible: true
+    text: |
+      package chat.handler;
+      
+      public class ConsoleCommand implements Command {
+      
+          private final String rawCommand;
+          private String username;
+          private String unprocessedPart;
+      
+          public ConsoleCommand(String rawCommand) {
+              this.rawCommand = rawCommand;
+              this.unprocessedPart = rawCommand;
+          }
+      
+          @Override
+          public String getRawCommand() {
+              return this.rawCommand;
+          }
+      
+          @Override
+          public String getUsername() {
+              return this.username;
+          }
+      
+          @Override
+          public String getUnprocessedPart() {
+              return this.unprocessedPart;
+          }
+      
+          @Override
+          public void setUsername(String username) {
+              this.username = username;
+          }
+      
+          @Override
+          public void setUnprocessedPart(String unprocessedPart) {
+              this.unprocessedPart = unprocessedPart;
+          }
+      }
+    learner_created: true
+  - name: src/chat/handler/CompoundHandler.java
+    visible: true
+    text: |
+      package chat.handler;
+      
+      import java.util.ArrayList;
+      import java.util.List;
+      
+      class CompoundHandler implements InputHandler {
+      
+          private final List<InputHandler> handlerChain;
+      
+          CompoundHandler(HandlerFactory handlerFactory) {
+              this.handlerChain = new ArrayList<>();
+              // Order matters
+              this.handlerChain.add(handlerFactory.getHandler(HandlerFactory.HandlerType.NAME_HANDLER));
+              this.handlerChain.add(handlerFactory.getHandler(HandlerFactory.HandlerType.COMMAND_HANDLER));
+          }
+      
+          @Override
+          public void handle(Command command) {
+              for (var handler : this.handlerChain) {
+                  handler.handle(command);
+              }
+          }
+      }
+    learner_created: true
+  - name: src/chat/handler/InputHandler.java
+    visible: true
+    text: |
+      package chat.handler;
+      
+      public interface InputHandler {
+      
+          void handle(Command input);
+      }
+    learner_created: true
+  - name: src/chat/client/Client.java
+    visible: true
+    learner_created: true
+  - name: src/chat/server/Session.java
+    visible: true
+    learner_created: true
+  - name: src/chat/server/DefaultSession.java
+    visible: true
+    learner_created: true
+  - name: src/chat/server/DefaultSessionHandler.java
+    visible: true
+    learner_created: true
+  - name: src/chat/server/SessionRepository.java
+    visible: true
+    learner_created: true
+  - name: src/chat/server/DefaultSessionRepository.java
+    visible: true
+    learner_created: true
+  - name: src/chat/server/SessionHandler.java
+    visible: true
+    learner_created: true
+  - name: src/chat/server/ServerConfig.java
+    visible: true
+    learner_created: true
+  - name: src/chat/server/Broadcast.java
+    visible: true
+    learner_created: true
+  - name: src/chat/server/DefaultBroadcast.java
+    visible: true
+    learner_created: true
+  - name: src/chat/Utility.java
+    visible: true
+    learner_created: true
 feedback_link: https://hyperskill.org/learn/step/5408#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Sat, 09 Mar 2024 00:13:02 UTC"
 record: -1
